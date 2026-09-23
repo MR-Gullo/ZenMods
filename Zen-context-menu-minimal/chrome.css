@@ -1,0 +1,69 @@
+/* Keep only the tab actions left unmarked in the reference screenshot. */
+#tabContextMenu > :not(:is(
+  #context_openANewTab,
+  #context_zenSplitTabs,
+  #context_reloadTab,
+  #context_reloadSelectedTabs,
+  #context_toggleMuteTab,
+  #context_toggleMuteSelectedTabs,
+  #context_pinTab,
+  #context_unpinTab,
+  #context_pinSelectedTabs,
+  #context_unpinSelectedTabs,
+  #context_unloadTab,
+  #context_unloadSelectedTabs,
+  #context_duplicateTab,
+  #context_duplicateTabs,
+  #context_moveTabOptions,
+  #context_undoCloseTab
+)):not([id^="webext-"]):not([class*="webextension"]):not([extensionid]) {
+  display: none !important;
+}
+
+/* Keep the page, link, and image actions left unmarked. */
+#contentAreaContextMenu > :not(:is(
+  #context-navigation,
+  #context-reload,
+  #context-reloadpage,
+  #context-reloadimage,
+  #context-bookmarkpage,
+  #context-savepage,
+  #context-saveimage,
+  #context-viewimage,
+  #context_zenWorkspacesOpenInContainerTab,
+  #context-openlink,
+  #context-zenSplitLink,
+  #context-copylink,
+  #context-searchselect,
+  #context-viewsource,
+  #context-inspect-a11y,
+  #context-inspect,
+  [label^="Open Link in New Work Tab"]
+)):not([id^="webext-"]):not([class*="webextension"]):not([extensionid]) {
+  display: none !important;
+}
+
+/* The screenshot keeps Bookmark Page, but marks Edit Bookmark for hiding. */
+#contentAreaContextMenu #context-bookmarkpage[label^="Edit Bookmark"] {
+  display: none !important;
+}
+
+/* Keep only Reload and Bookmark Page inside the grouped navigation menu. */
+#contentAreaContextMenu #context-navigation > :not(:is(
+  #context-reload,
+  #context-bookmarkpage
+)) {
+  display: none !important;
+}
+
+/* Back and Forward are crossed out in the screenshots. */
+#contentAreaContextMenu #context-back,
+#contentAreaContextMenu #context-forward {
+  display: none !important;
+}
+
+/* Remove dividers from the compact menus. */
+#tabContextMenu menuseparator,
+#contentAreaContextMenu menuseparator {
+  display: none !important;
+}
