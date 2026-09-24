@@ -1,14 +1,16 @@
 # Zen Minimal Context Menu
 
-This mod keeps the tab, page, link, and image context-menu actions left unmarked in the supplied screenshots. It hides the crossed-out built-in actions and keeps extension menus available. It also removes dividers.
+Keeps the tab, page, link, and image menu actions left unmarked in the supplied screenshots. It hides crossed-out built-in actions, keeps extension menus, and removes dividers.
 
-The upstream Zen Context Menu stylesheet has a positional `:nth-child(21)` fallback in its Duplicate Tab hide rule. A tab menu row added or removed before that position can make the rule target a different row. This mod uses named menu IDs and an allowlist instead.
+## Local test install
 
-## Install
+Zen's Import button only resolves mod IDs from the official theme store. It ignores asset URLs in an imported JSON file, so it cannot install this unpublished mod ID. Use the included local installer instead.
 
-1. Open Settings → Zen Mods → Import.
-2. Select `zen-mods-export.json` from the delivered `outputs` folder.
-3. Enable **Zen Minimal Context Menu**. Leave the original **Zen Context Menu** mod disabled.
-4. Right-click a tab, page, link, and image to check each menu.
+1. In Zen, open `about:support` and copy the **Profile Folder** path.
+2. Fully quit Zen.
+3. In Terminal, run `bash "/path/to/install-local.sh" "/path/to/your/Zen/profile"`, replacing both paths. If you omit the profile path, the script prompts for it.
+4. Reopen Zen. **Zen Minimal Context Menu** is added and enabled. Leave the original **Zen Context Menu** disabled.
 
-The import file fetches the stylesheet from this fork's `minimal-context-menu` branch. The branch must be published to GitHub before Zen can install it.
+The installer preserves your existing `zen-themes.json` entries and saves a timestamped backup before it edits that file. It also keeps a backup if this mod folder already exists.
+
+To remove the test mod, use **Remove** next to it in Settings → Zen Mods. Zen removes its local files and its entry from the mod list.
