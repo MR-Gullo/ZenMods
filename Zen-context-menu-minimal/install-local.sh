@@ -89,6 +89,52 @@ except Exception:
     raise
 PYTHON
 
+THEMES_CSS="$PROFILE_DIR/chrome/zen-themes.css"
+THEMES_CSS_BACKUP=""
+if [[ -f "$THEMES_CSS" ]]; then
+  THEMES_CSS_BACKUP="$THEMES_CSS.backup-$STAMP"
+  cp -p "$THEMES_CSS" "$THEMES_CSS_BACKUP"
+fi
+python3 - "$THEMES_CSS" "$SCRIPT_DIR/chrome.css" "$MOD_ID" <<'PYTHON'
+import os
+import pathlib
+import stat
+import sys
+import tempfile
+
+target = pathlib.Path(sys.argv[1])
+source = pathlib.Path(sys.argv[2]).read_text()
+mod_id = sys.argv[3]
+begin = f"/* BEGIN Zen Minimal Context Menu {mod_id} */"
+end = f"/* END Zen Minimal Context Menu {mod_id} */"
+block = f"{begin}\n{source.rstrip()}\n{end}"
+target.parent.mkdir(parents=True, exist_ok=True)
+content = target.read_text() if target.exists() else ""
+start = content.find(begin)
+if start >= 0:
+    finish = content.find(end, start)
+    if finish < 0:
+        raise SystemExit(f"Found an incomplete local stylesheet block in {target}; left it unchanged.")
+    finish += len(end)
+    content = content[:start] + block + content[finish:]
+elif source.strip() not in content:
+    content = content.rstrip() + ("\n\n" if content else "") + block + "\n"
+
+fd, temp_name = tempfile.mkstemp(prefix="zen-themes.css.", suffix=".tmp", dir=target.parent)
+try:
+    with os.fdopen(fd, "w") as stream:
+        stream.write(content)
+    if target.exists():
+        os.chmod(temp_name, stat.S_IMODE(target.stat().st_mode))
+    os.replace(temp_name, target)
+except Exception:
+    try:
+        os.unlink(temp_name)
+    except FileNotFoundError:
+        pass
+    raise
+PYTHON
+
 printf 'Installed Zen Minimal Context Menu in: %s\n' "$PROFILE_DIR"
 if [[ -n "$BACKUP_FILE" ]]; then
   printf 'Backup of the previous mod list: %s\n' "$BACKUP_FILE"
